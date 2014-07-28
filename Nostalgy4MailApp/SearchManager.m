@@ -85,12 +85,12 @@
 
 - (void) setContextMenu:(NSMenu *)menu {
 	
-	NSMenuItem* firstMenuItem =  [self newMenuItemWithTitle:@"Nostalgy" action:NULL andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(addSenderToAddressBook:) offset:1];
+	NSMenuItem* firstMenuItem =  [self newMenuItemWithTitle:@"Nostalgy" action:NULL andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(addSenderToContacts:) offset:1];
 	
 
 	if(!firstMenuItem)
 		NSLog(@"### Nostalgy 4 Mail.app: unable to add submenu <Nostalgy>");
-	else{
+	else {
 		[[firstMenuItem menu] insertItem:[NSMenuItem separatorItem] atIndex:[[firstMenuItem menu] indexOfItem:firstMenuItem]];
 		[[firstMenuItem menu] setSubmenu:menu forItem:firstMenuItem];
 		// [messageMenu setSubmenu:menu forItem:firstMenuItem];
