@@ -20,8 +20,6 @@
 	
 	[NSBundle loadNibNamed: @"SearchPopup" owner: new ];
 	
-	NSLog(@"SearchPopup: popupWithSubmenu: %@", submenu);
-	
 	return new;
 }
 
@@ -29,21 +27,11 @@
 
 	// update menu items
 	[[submenu delegate] menuNeedsUpdate: submenu ];
-	// set message handling to copy / move
-	[submenu _sendMenuOpeningNotification];
-	
-	if( FALSE ) {
-		NSPopUpButtonCell *popUpButtonCell = [[NSPopUpButtonCell alloc] initTextCell:@"" pullsDown:FALSE];
-		[popUpButtonCell setMenu:submenu];
-		[popUpButtonCell selectItem:nil];
-		[popUpButtonCell attachPopUpWithFrame:[searchWindow frame] inView: [searchWindow contentView]];	
-		
-		instrumentObjcMessageSends(YES);
-		[popUpButtonCell performClickWithFrame:[searchWindow frame] inView: [searchWindow contentView]];	
-		instrumentObjcMessageSends(NO);
-		
-		[popUpButtonCell dismissPopUp];	
-	}
+
+    if ([submenu respondsToSelector:@selector(_sendMenuOpeningNotification:)])
+        [submenu performSelector:@selector(_sendMenuOpeningNotification:)];
+    else if ([submenu respondsToSelector:@selector(_sendMenuOpeningNotification)])
+        [submenu performSelector:@selector(_sendMenuOpeningNotification)];
 	
 	
 	if( [parent lastFolder] != nil ) {
@@ -92,20 +80,10 @@
 		}
 		[searchWindow orderOut:nil];
 		result = YES;
-    }
-	else if(commandSelector == @selector(cancelOperation:)) {
+    } else if(commandSelector == @selector(cancelOperation:)) {
 		[searchWindow orderOut:nil];
 		result = YES;
-	}
-	/* else if(commandSelector == @selector(moveLeft:)) {
-	 // left arrow pressed
-	 result = YES;
-	 }
-	 else if(commandSelector == @selector(moveRight:)) {
-	 // rigth arrow pressed
-	 result = YES;
-	 }*/
-	 else if(commandSelector == @selector(moveUp:)) {
+	} else if(commandSelector == @selector(moveUp:)) {
 		 if(selectedResult != nil) {
 			 int index = [currentResults indexOfObject: selectedResult]-1;
 			 if(index < 0) index = 0;
